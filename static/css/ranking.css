@@ -1,0 +1,101 @@
+body {
+  //font-size: 22px;
+  font-family: arial,helvetica,sans-serif;
+}
+
+h2 {
+  padding: 10px;
+}
+
+table {
+  width: 100%;
+  color: black;
+  border-collapse: collapse;
+  //font-size: 22px;
+  //font-family: arial,helvetica,sans-serif;
+}
+
+tr.leader {
+  color: #d6b400;
+  font-weight: bold;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+form span.formFieldError,
+form div.formErrors{
+  color: red;
+}
+
+form div.formTeam {
+  margin-bottom: 10px;
+}
+
+form div.label {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+form.fourPlayers {
+  text-align: center;
+}
+
+form .versus {
+  //padding-top: 115px;
+}
+
+form.fourPlayers select{
+  height: 60px;
+  font-size: 30px;
+}
+
+.formTron {
+  display: None;
+}
+
+.footer {
+  margin-top: 20px;
+  float: right;
+}
+
+.open .dropdown-menu{display:block;}
+
+/* Tablesorter */
+
+th.headerSortUp { 
+    //background-image: url(../img/small_asc.gif); 
+    //background-color: purple; 
+} 
+
+th.headerSortDown { 
+    //background-image: url(../img/small_desc.gif); 
+    //background-color: red; 
+}
+
+th.headerSortUp:after { 
+  font-family: FontAwesome;
+  //top:0;
+  //left:-5px;
+  padding-left:4px;
+  content: "\f151"; 
+}
+
+th.headerSortDown:after {
+  font-family: FontAwesome;
+  //top:0;
+  //left:-5px;
+  padding-left:4px;
+  content: "\f150"; 
+}
+
+th.header {
+  cursor: pointer; 
+}
+
+table.teams tbody tr.highlight,
+table.players tbody tr.highlight {
+  background-color: #e0f8ff;
+}

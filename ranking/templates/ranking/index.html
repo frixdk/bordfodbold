@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% load staticfiles %}
+    <!--
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.css' %}" />
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+       -->
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ranking.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><i class="fa fa-futbol-o"></i> Commentor Bordfodbold</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a class="showForm" href="#">Add result</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="jumbotron {% if not form.errors %}formTron{% endif %}">
+            <form class="fourPlayers" name="form" method="post" action="{% url 'overview' %}">
+              {% csrf_token %}
+              <div class="col-md-5">
+                <div class="form-group">
+                  Winners yay
+                </div>
+                <div class="form-group {% if form.winner_1.errors %}has-error{% endif %}">
+                  {{ form.winner_1 }}
+                </div>
+                <div class="form-group {% if form.winner_2.errors %}has-error{% endif %}">
+                  {{ form.winner_2 }}
+                </div>
+              </div>
+              <div class="col-md-2 versus">
+                vs
+              </div>
+              <div class="col-md-5">
+                <div class="form-group">
+                  Losers lol
+                </div>
+                <div class="form-group {% if form.loser_1.errors %}has-error{% endif %}">
+                  {{ form.loser_1 }}
+                </div>
+                <div class="form-group {% if form.loser_2.errors %}has-error{% endif %}">
+                  {{ form.loser_2 }}
+                </div>
+              </div>
+              <div class="form-group">
+                {% if form.errors.integrity %}
+                  <div class="formErrors">
+                    {% for error in form.errors.integrity %}
+                      {{ error }}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg">Pwned</button>
+            </form>
+            
+        </div>
+      </div>
+      <!-- start footer -->
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h3>
+            Team rating
+          </h3>
+          <table class="teams table table-hover">
+            <thead>
+              <tr>
+                <th>Rank</th>
+	        <th>Team</th>
+	        <th>Rating</th>
+                <th>Matches</th>
+                <th>Won</th>
+                <th>Lost</th>
+                <th>Win ratio</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for team in teams %}
+                <tr
+                    class="{% if forloop.first %}leader{% endif %}"
+                    data-player-one="{{ team.player_list.0 }}"
+                    data-player-two="{{ team.player_list.1 }}"
+                >
+                  <td>{{ forloop.counter }}</td>
+                  <td>
+                    {% if forloop.first %} <i class="fa fa-trophy"></i>{% endif %}
+                    {{ team }}
+                  </td>
+                  <td title="Sigma: {{ team.sigma|floatformat:2 }}">{{ team.mu|floatformat:2 }}</td>
+                  <td>{{ team.played }}</td>
+                  <td>{{ team.won }}</td>
+                  <td>{{ team.lost }}</td>
+                  <td>{{ team.win_ratio }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>          
+        </div>
+        <div class="col-md-6">
+          <h3>Personal rating</h3>
+          <table class="players table table-hover" id="myTable">
+            <thead>
+              <tr>
+                <th>Rank</th>
+	        <th>Player</th>
+	        <th>Rating</th>
+                <th>Matches</th>
+                <th>Won</th>
+                <th>Lost</th>
+                <th>Win ratio</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for player in players %}
+                <tr class="{% if forloop.first %}leader{% endif %}" data-player="{{ player }}">
+                  <td>{{ forloop.counter }}</td>
+                  <td>
+                    {% if forloop.first %} <i class="fa fa-star-o"></i>{% endif %}
+                    {{ player }}
+                  </td>
+                  <td title="Sigma: {{ player.sigma|floatformat:2 }}">{{ player.mu|floatformat:2 }}</td>
+                  <td>{{ player.played }}</td>
+                  <td>{{ player.won }}</td>
+                  <td>{{ player.lost }}</td>
+                  <td>{{ player.win_ratio|floatformat:2 }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>          
+        </div>
+        <div class="col-md-12">
+          Total matches: {{ matches }}
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <a href="http://www.djangoproject.com/"><img src="https://www.djangoproject.com/m/img/badges/djangopowered126x54_grey.gif" border="0" alt="Powered by Django." title="Powered by Django." /></a>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+
+    <script src="{% static 'js/jquery.tablesorter.js' %}"></script>
+
+    <!--
+    <script src="{% static 'js/jquery.min.js' %}"</script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    -->
+    
+    <script type="text/javascript">
+
+     $(document).ready(function(){ 
+         $(".table").tablesorter(); 
+     }); 
+     
+     $(".showForm").on("click", function(){
+         $(".jumbotron").slideToggle();    
+     });
+
+     $("table.players tbody tr").on("click", function(){
+         var playerName = $(this).data("player");
+
+         $(this).addClass("highlight")
+
+         $("table tbody tr.highlight").removeClass("highlight");
+         
+         $('table.teams tbody tr[data-player-one="'+ playerName +'"]').addClass("highlight");
+         $('table.teams tbody tr[data-player-two="'+ playerName +'"]').addClass("highlight");
+     });
+    </script>
+    
+  </body>
+</html>
